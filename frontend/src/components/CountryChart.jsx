@@ -63,8 +63,6 @@ const CountryChart = ({ data }) => {
 
       countryDist.length = countryDist.length > 15 ? 15 : countryDist.length;
 
-      console.log(countryDist);
-
       svg.current
         .selectAll("g")
         .transition()

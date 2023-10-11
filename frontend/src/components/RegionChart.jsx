@@ -128,14 +128,11 @@ const RegionChart = ({ data }) => {
               .outerRadius(radius + 5)
           )
           .duration(200);
-        // .style("opacity", "0.8")
-        // .style("transform", "scaleX(1.02)");
       });
 
       arc.current.on(
         "mousemove",
         function (d, { data: { name, percentage, count } }) {
-          console.log(d);
           tooltip.style("left", d.clientX + 10 + "px");
           tooltip.style("top", d.clientY - 25 + "px");
           tooltip.style("display", "inline-block");
@@ -164,11 +161,11 @@ const RegionChart = ({ data }) => {
   return (
     <Center
       width={{
-        base: "100%", // 0px
-        sm: "100%", // ~480px. em is a relative unit and is dependant on the font-size.
-        md: "50%", // ~768px
-        lg: "50%", // ~992px
-        xl: "50%", // ~1280px
+        base: "100%",
+        sm: "100%",
+        md: "50%",
+        lg: "50%",
+        xl: "50%",
         "2xl": "50%",
       }}
     >
