@@ -18,8 +18,10 @@ const ScatterPlot = ({ data }) => {
     svg.current = d3
       .select("#scatter_plot")
       .append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
+      .attr("viewBox", "0 0 500 550")
+      .attr("preserveAspectRatio", "xMinYMin")
+      // .attr("width", width + margin.left + margin.right)
+      // .attr("height", height + margin.top + margin.bottom)
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -87,10 +89,19 @@ const ScatterPlot = ({ data }) => {
   }, [data]);
 
   return (
-    <Center width="50%">
+    <Center
+      width={{
+        base: "100%", // 0px
+        sm: "100%", // ~480px. em is a relative unit and is dependant on the font-size.
+        md: "50%", // ~768px
+        lg: "50%", // ~992px
+        xl: "50%", // ~1280px
+        "2xl": "50%",
+      }}
+    >
       <Flex
         p={2}
-        paddingBlock={10}
+        paddingBlock={5}
         marginBlock={5}
         marginInline={2}
         border="1px"

@@ -18,7 +18,8 @@ import {
   Center,
   Text,
 } from "@chakra-ui/react";
-import { MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { BsFillMoonStarsFill } from "react-icons/bs";
+import { BiSun } from "react-icons/bi";
 
 export default function Nav() {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -36,7 +37,7 @@ export default function Nav() {
           <Flex alignItems={"center"}>
             <Stack direction={"row"} spacing={7}>
               <Button onClick={toggleColorMode}>
-                {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+                {colorMode === "light" ? <BsFillMoonStarsFill /> : <BiSun />}
               </Button>
 
               <Menu>

@@ -11,39 +11,48 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  Button,
 } from "@chakra-ui/react";
 import { AiOutlineFilter } from "react-icons/ai";
+import {
+  BsCaretLeftFill,
+  BsCaretRightFill,
+  BsCaretUpFill,
+} from "react-icons/bs";
 
 import Select from "../components/ui/Select";
 
 import "../styles/Filters.scss";
 import { useEffect, useState } from "react";
-import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import RangeFilter from "./filters/RangeFilter";
 
-const Filters = ({ filters, setFilters }) => {
+const Filters = ({ filters, setFilters, show, setShow }) => {
   const [availableFilters, setAvailableFilters] = useState();
+
+  const setDefaultFilters = (res) => {
+    setFilters({
+      startYear: res.start_year.min,
+      endYear: res.end_year.max,
+      publishedYears: [{ value: "all", label: "All" }],
+      relevance: [res.relevance.min, res.relevance.max],
+      impact: [res.impact.min, res.impact.max],
+      likelihood: [res.likelihood.min, res.likelihood.max],
+      sectors: [{ value: "all", label: "All" }],
+      topics: [{ value: "all", label: "All" }],
+      countries: [{ value: "all", label: "All" }],
+      regions: [{ value: "all", label: "All" }],
+      pestles: [{ value: "all", label: "All" }],
+      sources: [{ value: "all", label: "All" }],
+    });
+  };
 
   useEffect(() => {
     if (!setFilters) return;
-    fetch("http://localhost:3000/getAvailableFilters")
+    fetch("http://192.168.1.187:3000/getAvailableFilters")
       .then((res) => res.json())
       .then((res) => {
         setAvailableFilters(res);
-        setFilters({
-          startYear: res.start_year.min,
-          endYear: res.end_year.max,
-          publishedYears: [{ value: "all", label: "All" }],
-          relevance: [res.relevance.min, res.relevance.max],
-          impact: [res.impact.min, res.impact.max],
-          likelihood: [res.likelihood.min, res.likelihood.max],
-          sectors: [{ value: "all", label: "All" }],
-          topics: [{ value: "all", label: "All" }],
-          countries: [{ value: "all", label: "All" }],
-          regions: [{ value: "all", label: "All" }],
-          pestles: [{ value: "all", label: "All" }],
-          sources: [{ value: "all", label: "All" }],
-        });
+        setDefaultFilters(res);
       });
   }, []);
 
@@ -57,21 +66,56 @@ const Filters = ({ filters, setFilters }) => {
       borderRadius="6px"
       p={2}
       m={1}
-      className="filter_container"
+      className={`filter_container ${show ? "show_filters" : "hide_filters"}`}
       height="100%"
       top="10px"
-      flex={expanded ? 4 : 2}
+      flex={
+        expanded
+          ? {
+              base: 4,
+              sm: 4,
+              md: 4,
+              lg: 4,
+              xl: 4,
+              "2xl": 5,
+            }
+          : {
+              base: 2,
+              sm: 2,
+              md: 2,
+              lg: 3,
+              xl: 2,
+              "2xl": 3,
+            }
+      }
     >
       <Flex justify="center" align="center">
         <IconButton
-          icon={expanded ? <ArrowRightIcon /> : <ArrowLeftIcon />}
+          className="expand"
+          icon={expanded ? <BsCaretRightFill /> : <BsCaretLeftFill />}
           onClick={() => setExpanded((e) => !e)}
         />
         <Icon as={AiOutlineFilter} />
         <Heading size="sm">&nbsp; Filters</Heading>
+        <IconButton
+          className="filter_show_button"
+          marginLeft="auto"
+          icon={<BsCaretUpFill />}
+          onClick={() => setShow((e) => !e)}
+        />
       </Flex>
 
       <Divider opacity={0.4} marginBlock={2} />
+
+      <Button
+        color="red"
+        _hover={{ backgroundColor: "red", color: "white" }}
+        marginBlock={2}
+        w="100%"
+        onClick={() => setDefaultFilters(availableFilters)}
+      >
+        Clear Filters
+      </Button>
 
       <Flex
         paddingInline={2}
@@ -256,55 +300,14 @@ const Filters = ({ filters, setFilters }) => {
           />
         </Box>
       </Flex>
-
-      {/* <Accordion allowToggle>
-        <SelectFilter data={availableFilters.sectors} filterName={"Sectors"} />
-        <SelectFilter data={availableFilters.topics} filterName={"Topics"} />
-        <SelectFilter
-          data={availableFilters.countries}
-          filterName={"Countries"}
+      <Flex justify="center" flex="1">
+        <IconButton
+          flex="1"
+          className="filter_show_button"
+          icon={<BsCaretUpFill />}
+          onClick={() => setShow((e) => !e)}
         />
-        <SelectFilter data={availableFilters.regions} filterName={"Regions"} />
-        <SelectFilter data={availableFilters.pestles} filterName={"Pestles"} />
-
-        <AccordionItem>
-          <h2>
-            <AccordionButton>
-              <Box as="span" flex="1" textAlign="left">
-                Sources
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel pb={2}>
-            <CheckboxGroup colorScheme="green" defaultValue="All">
-              <Input
-                value={searchSource}
-                onChange={(e) => setSearchSource(e.target.value)}
-                placeholder="Search Source"
-                marginBlock={2}
-              />
-              <Checkbox value="All">All</Checkbox>
-              <Stack spacing="1" direction="column">
-                {availableFilters.sources
-                  .filter((source) => {
-                    if (
-                      !debounceSearchSource ||
-                      source.indexOf(debounceSearchSource) !== -1
-                    )
-                      return true;
-                    return false;
-                  })
-                  .map((sector) => (
-                    <Checkbox value={sector} key={sector}>
-                      {sector}
-                    </Checkbox>
-                  ))}
-              </Stack>
-            </CheckboxGroup>
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion> */}
+      </Flex>
     </Box>
   );
 };

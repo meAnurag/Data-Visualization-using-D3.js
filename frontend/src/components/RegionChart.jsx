@@ -47,8 +47,10 @@ const RegionChart = ({ data }) => {
       svg.current = d3
         .select("#region_dist")
         .append("svg")
-        .attr("width", width)
-        .attr("height", height);
+        .attr("viewBox", "0 0 500 550")
+        .attr("preserveAspectRatio", "xMinYMin");
+      // .attr("width", width)
+      // .attr("height", height);
 
       svg.current
         .append("g")
@@ -133,6 +135,7 @@ const RegionChart = ({ data }) => {
       arc.current.on(
         "mousemove",
         function (d, { data: { name, percentage, count } }) {
+          console.log(d);
           tooltip.style("left", d.clientX + 10 + "px");
           tooltip.style("top", d.clientY - 25 + "px");
           tooltip.style("display", "inline-block");
@@ -159,17 +162,25 @@ const RegionChart = ({ data }) => {
   }, [data, radius]);
 
   return (
-    <Center width="50%">
+    <Center
+      width={{
+        base: "100%", // 0px
+        sm: "100%", // ~480px. em is a relative unit and is dependant on the font-size.
+        md: "50%", // ~768px
+        lg: "50%", // ~992px
+        xl: "50%", // ~1280px
+        "2xl": "50%",
+      }}
+    >
       <Flex
         p={2}
-        paddingBlock={10}
+        paddingBlock={5}
         marginBlock={5}
         marginInline={2}
         border="1px"
         borderRadius="8px"
         marginTop="5px"
         id="region_dist"
-        height={600}
         width="100%"
         direction="column"
         justify="center"

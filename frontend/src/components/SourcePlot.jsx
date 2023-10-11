@@ -44,8 +44,8 @@ const SourcePlot = ({ data }) => {
     svg.current = d3
       .select("#source_plot")
       .append("svg")
-      .attr("width", width)
-      .attr("height", height);
+      .attr("viewBox", "0 0 500 550")
+      .attr("preserveAspectRatio", "xMinYMin");
   };
 
   useEffect(() => {
@@ -196,10 +196,20 @@ const SourcePlot = ({ data }) => {
   //   useTextColorD3();
 
   return (
-    <Center width="50%">
+    <Center
+      w
+      width={{
+        base: "100%", // 0px
+        sm: "100%", // ~480px. em is a relative unit and is dependant on the font-size.
+        md: "50%", // ~768px
+        lg: "50%", // ~992px
+        xl: "50%", // ~1280px
+        "2xl": "50%",
+      }}
+    >
       <Flex
         p={2}
-        paddingBlock={10}
+        paddingBlock={5}
         marginBlock={5}
         marginInline={2}
         border="1px"

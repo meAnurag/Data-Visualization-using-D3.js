@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Flex, Heading, Spinner } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Spinner, Text } from "@chakra-ui/react";
 
 import Barchart from "./components/Barchart";
 import Filters from "./components/Filters";
@@ -11,6 +11,10 @@ import { useTextColorD3 } from "./hooks/useTextColorD3";
 import { useDebounce } from "./hooks/useDebounce";
 import { useFetch } from "./hooks/useFetch";
 import { isWithinRange } from "./utils/filterUtils";
+import { BsCaretDownFill } from "react-icons/bs";
+import { TbMoodEmptyFilled } from "react-icons/tb";
+
+import "./App.scss";
 
 function App() {
   // const [data, setData] = useState();
@@ -24,7 +28,9 @@ function App() {
 
   const [filteredData, setFilteredData] = useState();
 
-  const debouncedFilters = useDebounce(filters, 1000);
+  const [showFilters, setShowFilters] = useState(false);
+
+  const debouncedFilters = useDebounce(filters, 100);
 
   useEffect(() => {
     if (
@@ -100,10 +106,14 @@ function App() {
 
       const publishedYear = d.published && new Date(d.published).getFullYear();
 
+      console.log(debouncedFilters.publishedYears);
+
       if (
         filtersToBeApplied.includes("publishedYears") &&
         (!publishedYear ||
-          !debouncedFilters.publishedYears.includes(publishedYear))
+          !debouncedFilters.publishedYears
+            .map((y) => y.value)
+            .includes(publishedYear))
       )
         return false;
 
@@ -183,37 +193,89 @@ function App() {
 
   useTextColorD3();
 
+  if (!filteredData && loading)
+    return (
+      <Flex
+        justify="center"
+        align="center"
+        gap={4}
+        height="90vh"
+        direction="column"
+      >
+        <Spinner size="xl" thickness="4px" speed="0.65s" />
+        <Heading>Loading</Heading>
+      </Flex>
+    );
+
   return (
     <Box>
-      {filteredData && filteredData.length && !loading ? (
-        <Flex marginTop="10px">
-          <Flex flex="16" direction="column" m={0}>
-            <Flex>
-              <Barchart data={filteredData} />
-              <RegionChart data={filteredData} />
-            </Flex>
-            <Flex>
-              <CountryChart data={filteredData} />
-            </Flex>
-            <Flex>
-              <ScatterPlot data={filteredData} />
-              <SourcePlot data={filteredData} />
-            </Flex>
-          </Flex>
-          <Filters filters={filters} setFilters={setFilters} />
-        </Flex>
-      ) : (
-        <Flex
-          justify="center"
-          align="center"
-          gap={4}
-          height="90vh"
-          direction="column"
+      <Flex paddingInline={3} marginTop={2} className="filter_show_button">
+        <Button
+          flex="1"
+          onClick={() => {
+            setShowFilters((a) => !a);
+          }}
         >
-          <Spinner size="xl" thickness="4px" speed="0.65s" />
-          <Heading>Loading</Heading>
+          <Flex flex="1" justify="space-between">
+            <Text>Filters</Text>
+            <BsCaretDownFill />
+          </Flex>
+        </Button>
+      </Flex>
+      <Flex marginTop="10px">
+        <Flex flex="16" direction="column">
+          {filteredData && filteredData.length && !loading ? (
+            <>
+              <Flex
+                direction={{
+                  base: "column", // 0px
+                  sm: "column", // ~480px. em is a relative unit and is dependant on the font-size.
+                  md: "row", // ~768px
+                  lg: "row", // ~992px
+                  xl: "row", // ~1280px
+                  "2xl": "row",
+                }}
+                m={0}
+              >
+                <Barchart data={filteredData} />
+                <RegionChart data={filteredData} />
+              </Flex>
+              <Flex>
+                <CountryChart data={filteredData} />
+              </Flex>
+              <Flex
+                direction={{
+                  base: "column", // 0px
+                  sm: "column", // ~480px. em is a relative unit and is dependant on the font-size.
+                  md: "row", // ~768px
+                  lg: "row", // ~992px
+                  xl: "row", // ~1280px
+                  "2xl": "row",
+                }}
+              >
+                <ScatterPlot data={filteredData} />
+                <SourcePlot data={filteredData} />
+              </Flex>
+            </>
+          ) : null}
+
+          {filteredData && filteredData.length === 0 && (
+            <Flex flex="1" align="center" paddingTop={20} direction="column">
+              <TbMoodEmptyFilled size={100} />
+              <Heading textAlign="center">
+                No Data matches selected filters.
+              </Heading>
+            </Flex>
+          )}
         </Flex>
-      )}
+
+        <Filters
+          filters={filters}
+          setFilters={setFilters}
+          show={showFilters}
+          setShow={setShowFilters}
+        />
+      </Flex>
     </Box>
   );
 }

@@ -20,9 +20,11 @@ const CountryChart = ({ data }) => {
       svg.current = d3
         .select("#country_chart")
         .append("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .attr("viewBox", [0, 0, width, height])
+        .attr("viewBox", "0 0 1000 700")
+        .attr("preserveAspectRatio", "xMinYMin")
+
+        // .attr("height", height)
+        // .attr("viewBox", [0, 0, width, height])
         .attr("style", "max-width: 100%; height: auto; font: 10px sans-serif;");
     };
     createGraph();
