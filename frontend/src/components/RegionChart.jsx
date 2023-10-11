@@ -26,7 +26,6 @@ const RegionChart = ({ data }) => {
         .attr("viewBox", "0 0 500 550")
         .attr("preserveAspectRatio", "xMinYMin");
       // .attr("width", width)
-      // .attr("height", height);
 
       svg.current
         .append("g")

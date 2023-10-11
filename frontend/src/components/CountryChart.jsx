@@ -73,8 +73,10 @@ const CountryChart = ({ data }) => {
 
       const x = d3
         .scaleLinear()
-        .domain([0, maxCount + 5])
+        .domain([0, maxCount + 1])
         .range([marginLeft, width - marginRight]);
+
+      const xTicks = x.ticks().filter((n) => Number.isInteger(n));
 
       const y = d3
         .scaleBand()
@@ -125,7 +127,7 @@ const CountryChart = ({ data }) => {
       svg.current
         .append("g")
         .attr("transform", `translate(0,${marginTop})`)
-        .call(d3.axisTop(x));
+        .call(d3.axisTop(x).tickValues(xTicks).tickFormat(d3.format("d")));
 
       svg.current
         .append("g")

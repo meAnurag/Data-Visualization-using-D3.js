@@ -56,8 +56,10 @@ const SourcePlot = ({ data }) => {
     sourceDist.sort((a, b) => b.count - a.count);
     sourceDist.length = sourceDist.length > 15 ? 15 : sourceDist.length;
     sources.length = sourceDist.length > 15 ? 15 : sourceDist.length;
+
     let nBars = sources.length;
     let barWidth = chartRadius / nBars - barPadding;
+    barWidth = barWidth < 15 ? barWidth : 15;
 
     sourceDist.forEach((d, i) => {
       d.radius = (chartRadius / nBars) * i + barPadding;
@@ -75,7 +77,7 @@ const SourcePlot = ({ data }) => {
       .attr("cx", width / 2)
       .attr("cy", height / 2)
       .attr("fill", "none")
-      .style("stroke", "silver")
+      .style("stroke", "steelblue")
       .style("stroke-width", "1px");
 
     const v = rAxis.selectAll("text").data(sourceDist);
@@ -90,7 +92,8 @@ const SourcePlot = ({ data }) => {
       )
       .style("font-size", "12px")
       .style("fill", "white")
-      .style("text-anchor", "end");
+      .style("text-anchor", "end")
+      .style("z-index", "99999");
 
     let ticks = [0, 10, 20, 30, 40];
 

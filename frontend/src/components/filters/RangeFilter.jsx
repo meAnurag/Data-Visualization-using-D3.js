@@ -7,9 +7,12 @@ import {
   RangeSliderThumb,
   RangeSliderTrack,
   Text,
+  useColorMode,
 } from "@chakra-ui/react";
 
 const RangeFilter = ({ min, max, step, label, value, onChange }) => {
+  const { colorMode } = useColorMode();
+
   return (
     <Flex direction="column" paddingInline={0} marginBlock={6} gap={2}>
       <Text as="b">{label}</Text>
@@ -36,8 +39,16 @@ const RangeFilter = ({ min, max, step, label, value, onChange }) => {
             <RangeSliderFilledTrack bg="tomato" />
           </RangeSliderTrack>
 
-          <RangeSliderThumb boxSize={4} index={0} />
-          <RangeSliderThumb boxSize={4} index={1} />
+          <RangeSliderThumb
+            boxSize={4}
+            index={0}
+            backgroundColor={colorMode === "light" ? "lightgrey" : "white"}
+          />
+          <RangeSliderThumb
+            boxSize={4}
+            index={1}
+            backgroundColor={colorMode === "light" ? "lightgrey" : "white"}
+          />
         </RangeSlider>
       </Box>
     </Flex>

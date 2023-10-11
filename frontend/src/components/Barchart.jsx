@@ -12,19 +12,12 @@ const height = 500 - margin.top - margin.bottom;
 const Barchart = ({ data }) => {
   const svg = useRef();
 
-  const tooltip = useRef();
-
-  const x = useRef();
-  const y = useRef();
-
   const mouseover = function (_, d) {
-    if (!tooltip.current) return;
     const text = d3.select("#bar_tooltip");
     text.text(`${d.name}: ${d.count}`);
   };
 
   const mousemove = function () {
-    if (!tooltip.current) return;
     const [x, y] = d3.pointer(event);
     const text = d3.select("#bar_tooltip");
     text.style("left", x + "px");
@@ -33,7 +26,6 @@ const Barchart = ({ data }) => {
   };
 
   const mouseleave = function () {
-    if (!tooltip.current) return;
     const text = d3.select("#bar_tooltip");
     text.style("opacity", 0);
   };
@@ -92,44 +84,46 @@ const Barchart = ({ data }) => {
         return { name: d, count: sectorCount[d] };
       });
 
-      x.current = d3.scaleBand().range([0, width]).domain(sectors).padding(0.2);
+      const x = d3.scaleBand().range([0, width]).domain(sectors).padding(0.2);
 
       svg.current
         .append("g")
         .attr("transform", "translate(0," + height + ")")
         .attr("class", "xAxis")
-        .call(d3.axisBottom(x.current))
+        .call(d3.axisBottom(x))
         .selectAll("text")
         .attr("transform", "translate(-10,0)rotate(-45)")
         .style("text-anchor", "end");
 
-      y.current = d3
+      const y = d3
         .scaleLinear()
         .domain([0, maxCount + 1])
         .range([height, 0]);
 
+      const yTicks = y.ticks().filter((n) => Number.isInteger(n));
+
       svg.current
         .append("g")
         .attr("class", "myYaxis")
-        .call(d3.axisLeft(y.current));
+        .call(d3.axisLeft(y).tickValues(yTicks).tickFormat(d3.format("d")));
 
       const u = svg.current.selectAll("rect").data(sectorDist);
 
       u.enter()
         .append("rect")
         .merge(u)
-        .attr("x", (d) => x.current(d.name))
-        .attr("width", x.current.bandwidth())
+        .attr("x", (d) => x(d.name))
+        .attr("width", x.bandwidth())
         .on("mouseover", mouseover)
         .on("mousemove", mousemove)
         .on("mouseleave", mouseleave)
         .transition()
         .duration(800)
-        .attr("y", (d) => y.current(d.count))
-        .attr("height", (d) => height - y.current(d.count))
+        .attr("y", (d) => y(d.count))
+        .attr("height", (d) => height - y(d.count))
         .attr("fill", (_, i) => COLOR_SCALE[i])
-        .delay(function (d, i) {
-          return i * 100;
+        .delay(function (_, i) {
+          return i * 50;
         });
     };
 
@@ -139,7 +133,6 @@ const Barchart = ({ data }) => {
   return (
     <ChartContainer id="bar-chart" title="Sectors">
       <div
-        ref={tooltip}
         id="bar_tooltip"
         style={{
           position: "absolute",

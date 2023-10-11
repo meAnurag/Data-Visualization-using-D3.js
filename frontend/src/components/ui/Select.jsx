@@ -29,7 +29,10 @@ const Select = ({ options, props, addAll, value, onChange }) => {
         control: (base) => ({
           ...base,
           ...(colorMode === "light" ? colors.light : colors.dark),
-          border: "0.5px solid rgba(255,255,255,0.2)",
+          border:
+            colorMode === "light"
+              ? "0.5 px solid rgba(0,0,0,0)"
+              : "0.5px solid rgba(255,255,255,0.2)",
         }),
         singleValue: (base) => ({ ...base, color: "white" }),
 
