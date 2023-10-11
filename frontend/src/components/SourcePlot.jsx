@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
-import { Box, Center, Flex, Heading } from "@chakra-ui/react";
 import * as d3 from "d3";
 
 import { COLOR_SCALE } from "../config";
 
 import "../styles/SourceChart.scss";
+import ChartContainer from "./ui/ChartContainer";
 
 let width = 500;
 let height = 500;
@@ -20,7 +20,7 @@ const SourcePlot = ({ data }) => {
     svg.current = d3
       .select("#source_plot")
       .append("svg")
-      .attr("viewBox", "0 0 500 550")
+      .attr("viewBox", "0 0 500 470")
       .attr("preserveAspectRatio", "xMinYMin");
   };
 
@@ -171,37 +171,7 @@ const SourcePlot = ({ data }) => {
 
   //   useTextColorD3();
 
-  return (
-    <Center
-      w
-      width={{
-        base: "100%", // 0px
-        sm: "100%", // ~480px. em is a relative unit and is dependant on the font-size.
-        md: "50%", // ~768px
-        lg: "50%", // ~992px
-        xl: "50%", // ~1280px
-        "2xl": "50%",
-      }}
-    >
-      <Flex
-        p={2}
-        paddingBlock={5}
-        marginBlock={5}
-        marginInline={2}
-        border="1px"
-        borderRadius="8px"
-        marginTop="5px"
-        id="source_plot"
-        width="100%"
-        direction="column"
-        align="center"
-      >
-        <Box>
-          <Heading size="md">Top Sources.</Heading>
-        </Box>
-      </Flex>
-    </Center>
-  );
+  return <ChartContainer id="source_plot" title="Top Sources" />;
 };
 
 export default SourcePlot;

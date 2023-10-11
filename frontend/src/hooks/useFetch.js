@@ -13,7 +13,6 @@ export const useFetch = (endpoint) => {
     const fetchData = async () => {
       try {
         const res = await fetch(`${SERVER_URL}${endpoint}`);
-        console.log(`${SERVER_URL}${endpoint}`);
         const json = await res.json();
         setData(json);
         setLoading(false);

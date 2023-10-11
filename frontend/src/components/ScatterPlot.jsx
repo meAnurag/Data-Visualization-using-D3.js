@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
-import { Box, Center, Flex, Heading } from "@chakra-ui/react";
 import * as d3 from "d3";
+import ChartContainer from "./ui/ChartContainer";
 
 const ScatterPlot = ({ data }) => {
   const svg = useRef();
@@ -18,7 +18,7 @@ const ScatterPlot = ({ data }) => {
     svg.current = d3
       .select("#scatter_plot")
       .append("svg")
-      .attr("viewBox", "0 0 500 550")
+      .attr("viewBox", "0 0 500 450")
       .attr("preserveAspectRatio", "xMinYMin")
       // .attr("width", width + margin.left + margin.right)
       // .attr("height", height + margin.top + margin.bottom)
@@ -89,34 +89,7 @@ const ScatterPlot = ({ data }) => {
   }, [data]);
 
   return (
-    <Center
-      width={{
-        base: "100%", // 0px
-        sm: "100%", // ~480px. em is a relative unit and is dependant on the font-size.
-        md: "50%", // ~768px
-        lg: "50%", // ~992px
-        xl: "50%", // ~1280px
-        "2xl": "50%",
-      }}
-    >
-      <Flex
-        p={2}
-        paddingBlock={5}
-        marginBlock={5}
-        marginInline={2}
-        border="1px"
-        borderRadius="8px"
-        marginTop="5px"
-        id="scatter_plot"
-        width="100%"
-        direction="column"
-        align="center"
-      >
-        <Box>
-          <Heading size="md">Impact - Likelihood relation.</Heading>
-        </Box>
-      </Flex>
-    </Center>
+    <ChartContainer id="scatter_plot" title="Impact - Likelihood relation" />
   );
 };
 

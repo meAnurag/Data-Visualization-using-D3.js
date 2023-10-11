@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
-import { Box, Center, Flex, Heading } from "@chakra-ui/react";
 import * as d3 from "d3";
 
 import { COLOR_SCALE } from "../config";
 
 import "../styles/RegionChart.scss";
+import ChartContainer from "./ui/ChartContainer";
 
 const RegionChart = ({ data }) => {
   const svg = useRef();
@@ -86,10 +86,7 @@ const RegionChart = ({ data }) => {
 
       arc.current.exit().remove();
 
-      const tooltip = d3
-        .select("#region_dist")
-        .append("div")
-        .attr("class", "toolTip_region_dist");
+      const tooltip = d3.select(".toolTip_region_dist");
 
       arc.current.style("transition", "all 200ms ease");
 
@@ -103,21 +100,26 @@ const RegionChart = ({ data }) => {
               .innerRadius(0)
               .outerRadius(radius + 5)
           )
+          .style("opacity", 1)
           .duration(200);
       });
 
       arc.current.on(
         "mousemove",
         function (d, { data: { name, percentage, count } }) {
-          tooltip.style("left", d.clientX + 10 + "px");
-          tooltip.style("top", d.clientY - 25 + "px");
-          tooltip.style("display", "inline-block");
-          tooltip.html(`${name} <br/> ${percentage.toFixed(2)} % (${count})`);
+          const [x, y] = d3.pointer(event);
+          tooltip.style("top", y + 300 + "px");
+          tooltip.style("left", x + 150 + "px");
+          tooltip.style("display", "flex");
+          tooltip.html(
+            `${name} <br/> ${percentage.toFixed(2)} % <br/> (${count})`
+          );
         }
       );
 
       arc.current.on("mouseout", function () {
         tooltip.style("display", "none");
+
         d3.select(this)
           .transition()
           .attr(
@@ -128,42 +130,15 @@ const RegionChart = ({ data }) => {
               .outerRadius(radius - 10)
           )
           .duration(200);
-        // d3.select(this).style("opacity", "1").style("transform", "scaleX(1.0)");
       });
     };
     updateData();
   }, [data, radius]);
 
   return (
-    <Center
-      width={{
-        base: "100%",
-        sm: "100%",
-        md: "50%",
-        lg: "50%",
-        xl: "50%",
-        "2xl": "50%",
-      }}
-    >
-      <Flex
-        p={2}
-        paddingBlock={5}
-        marginBlock={5}
-        marginInline={2}
-        border="1px"
-        borderRadius="8px"
-        marginTop="5px"
-        id="region_dist"
-        width="100%"
-        direction="column"
-        justify="center"
-        align="center"
-      >
-        <Box>
-          <Heading size="md">Region Distribution</Heading>
-        </Box>
-      </Flex>
-    </Center>
+    <ChartContainer id="region_dist" title="Region Distribution">
+      <div className="toolTip_region_dist" />
+    </ChartContainer>
   );
 };
 

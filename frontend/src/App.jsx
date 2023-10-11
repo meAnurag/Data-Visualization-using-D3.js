@@ -33,11 +33,6 @@ function App() {
   const debouncedFilters = useDebounce(filters, 100);
 
   useEffect(() => {
-    console.log(import.meta.env);
-    console.log({ data: data.data, availableFilterOptions, debouncedFilters });
-  }, [data.data, availableFilterOptions, debouncedFilters]);
-
-  useEffect(() => {
     if (
       !data.data ||
       data.data.length < 1 ||

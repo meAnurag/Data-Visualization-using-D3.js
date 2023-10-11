@@ -1,6 +1,8 @@
-import * as d3 from "d3";
-import { Center, Box, Heading, Flex } from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
+import * as d3 from "d3";
+
+import { COLOR_SCALE } from "../config";
+import ChartContainer from "./ui/ChartContainer";
 
 const margin = { top: 30, right: 30, bottom: 70, left: 60 },
   width = 500 - margin.left - margin.right;
@@ -47,41 +49,13 @@ const Barchart = ({ data }) => {
       if (!sectors.includes(sector)) sectors.push(sector);
     });
 
-    // append the svg object to the body of the page
     svg.current = d3
       .select("#bar-chart")
       .append("svg")
-      // .attr("width", width + margin.left + margin.right)
-      // .attr("height", height + margin.top + margin.bottom)
-      .attr("viewBox", "0 0 500 550")
+      .attr("viewBox", "0 0 500 530")
       .attr("preserveAspectRatio", "xMinYMin")
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    // X axis
-
-    // Add Y axis
-
-    // tooltip.current = svg.current
-    //   .append("g")
-    //   .style("opacity", 0)
-    //   .attr("class", "tooltip")
-    //   .style("border", "solid")
-    //   .style("border-width", "1px")
-    //   .style("border-radius", "5px")
-    //   .style("padding", "10px")
-    //   .style("color", "black")
-    //   .style("width", "100")
-    //   .style("height", "100")
-    //   .style("background-color", "white")
-    //   .style("z-index", "100000");
-
-    // tooltip.current
-    //   .append("text")
-    //   .attr("class", "text_area")
-    //   .style("background-color", "white")
-    //   .style("fill", "white")
-    //   .style("z-index", "100001");
   };
 
   useEffect(() => {
@@ -153,7 +127,7 @@ const Barchart = ({ data }) => {
         .duration(800)
         .attr("y", (d) => y.current(d.count))
         .attr("height", (d) => height - y.current(d.count))
-        .attr("fill", "#69b3a2")
+        .attr("fill", (_, i) => COLOR_SCALE[i])
         .delay(function (d, i) {
           return i * 100;
         });
@@ -163,48 +137,21 @@ const Barchart = ({ data }) => {
   }, [data]);
 
   return (
-    <Center
-      width={{
-        base: "100%", // 0px
-        sm: "100%", // ~480px. em is a relative unit and is dependant on the font-size.
-        md: "50%", // ~768px
-        lg: "50%", // ~992px
-        xl: "50%", // ~1280px
-        "2xl": "50%",
-      }}
-    >
-      <Flex
-        p={2}
-        paddingBlock={5}
-        marginBlock={5}
-        marginInline={2}
-        border="1px"
-        borderRadius="8px"
-        marginTop="5px"
-        id="bar-chart"
-        width="100%"
-        direction="column"
-        align="center"
-        position="relative"
-      >
-        <Box>
-          <Heading size="md">Sectors</Heading>
-        </Box>
-        <div
-          ref={tooltip}
-          id="bar_tooltip"
-          style={{
-            position: "absolute",
-            backgroundColor: "palegreen",
-            color: "blue",
-            padding: "8px",
-            borderRadius: 6,
-            zIndex: 999999,
-            opacity: 0,
-          }}
-        ></div>
-      </Flex>
-    </Center>
+    <ChartContainer id="bar-chart" title="Sectors">
+      <div
+        ref={tooltip}
+        id="bar_tooltip"
+        style={{
+          position: "absolute",
+          backgroundColor: "palegreen",
+          color: "blue",
+          padding: "8px",
+          borderRadius: 6,
+          zIndex: 999999,
+          opacity: 0,
+        }}
+      />
+    </ChartContainer>
   );
 };
 
