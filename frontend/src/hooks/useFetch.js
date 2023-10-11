@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { SERVER_URL } from "../config";
+
 export const useFetch = (endpoint) => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState();
@@ -10,7 +12,8 @@ export const useFetch = (endpoint) => {
 
     const fetchData = async () => {
       try {
-        const res = await fetch(`http://192.168.1.187:3000${endpoint}`);
+        const res = await fetch(`${SERVER_URL}${endpoint}`);
+        console.log(`${SERVER_URL}${endpoint}`);
         const json = await res.json();
         setData(json);
         setLoading(false);

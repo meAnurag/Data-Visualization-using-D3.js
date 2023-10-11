@@ -93,6 +93,7 @@ const Barchart = ({ data }) => {
 
     svg.current.selectAll("rect").remove();
     svg.current.select(".myYaxis").remove();
+    svg.current.select(".xAxis").remove();
 
     const updateData = () => {
       const sectors = [];

@@ -26,9 +26,7 @@ import "../styles/Filters.scss";
 import { useEffect, useState } from "react";
 import RangeFilter from "./filters/RangeFilter";
 
-const Filters = ({ filters, setFilters, show, setShow }) => {
-  const [availableFilters, setAvailableFilters] = useState();
-
+const Filters = ({ filters, setFilters, show, setShow, availableFilters }) => {
   const setDefaultFilters = (res) => {
     setFilters({
       startYear: res.start_year.min,
@@ -47,14 +45,10 @@ const Filters = ({ filters, setFilters, show, setShow }) => {
   };
 
   useEffect(() => {
-    if (!setFilters) return;
-    fetch("http://192.168.1.187:3000/getAvailableFilters")
-      .then((res) => res.json())
-      .then((res) => {
-        setAvailableFilters(res);
-        setDefaultFilters(res);
-      });
-  }, []);
+    if (!setFilters || filters || !availableFilters) return;
+
+    setDefaultFilters(availableFilters);
+  }, [availableFilters]);
 
   const [expanded, setExpanded] = useState(false);
 
