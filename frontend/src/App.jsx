@@ -56,7 +56,7 @@ function App() {
 
   useTextColorD3();
 
-  if (!filteredData && loading)
+  if (loading)
     return (
       <Flex
         justify="center"

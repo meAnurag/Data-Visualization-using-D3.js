@@ -36,7 +36,6 @@ const SourcePlot = ({ data }) => {
     let sourceCount = {};
     data.forEach(({ source }) => {
       if (!source) return;
-
       sourceCount = {
         ...sourceCount,
         [source]: sourceCount[source] ? sourceCount[source] + 1 : 1,
