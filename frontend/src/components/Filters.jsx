@@ -57,7 +57,7 @@ const Filters = ({ filters, setFilters, show, setShow, availableFilters }) => {
 
   return (
     <Skeleton
-      border="1px"
+      border="1px solid rgba(200,200,200,0.5)"
       borderRadius="6px"
       isLoaded={!!filters}
       p={2}

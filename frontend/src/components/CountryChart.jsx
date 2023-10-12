@@ -143,7 +143,7 @@ const CountryChart = ({ data }) => {
       paddingBlock={10}
       marginBlock={5}
       marginInline={2}
-      border="1px"
+      border="1px solid rgba(200,200,200,0.5)"
       borderRadius="8px"
       marginTop="5px"
       id="country_chart"
