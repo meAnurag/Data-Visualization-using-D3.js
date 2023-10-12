@@ -12,6 +12,7 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   Button,
+  Skeleton,
 } from "@chakra-ui/react";
 import { AiOutlineFilter } from "react-icons/ai";
 import {
@@ -55,9 +56,10 @@ const Filters = ({ filters, setFilters, show, setShow, availableFilters }) => {
   if (!availableFilters || !filters) return;
 
   return (
-    <Box
+    <Skeleton
       border="1px"
       borderRadius="6px"
+      isLoaded={!!filters}
       p={2}
       m={1}
       className={`filter_container ${show ? "show_filters" : "hide_filters"}`}
@@ -302,7 +304,7 @@ const Filters = ({ filters, setFilters, show, setShow, availableFilters }) => {
           onClick={() => setShow((e) => !e)}
         />
       </Flex>
-    </Box>
+    </Skeleton>
   );
 };
 
