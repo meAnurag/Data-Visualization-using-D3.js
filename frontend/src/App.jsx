@@ -56,7 +56,7 @@ function App() {
 
   useTextColorD3();
 
-  if (loading)
+  if (!filteredData)
     return (
       <Flex
         justify="center"
@@ -124,7 +124,7 @@ function App() {
 
           {filteredData && filteredData.length === 0 && (
             <Flex flex="1" align="center" paddingTop={20} direction="column">
-              <TbMoodEmptyFilled size={100} />
+              <TbMoodEmptyFilled size={250} />
               <Heading textAlign="center">
                 No Data matches selected filters.
               </Heading>
