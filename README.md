@@ -2,9 +2,10 @@
 # Data Viz
 
 Data visualization using MERN stack and D3 js.
-## Deployement
 
-https://blackcoffr-mern.vercel.app/
+## Hosted on
+
+[Vercel](https://data-viz-d3.vercel.app/)
 
 
 ## Run Locally
