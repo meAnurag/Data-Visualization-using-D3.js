@@ -1,5 +1,5 @@
 
-# Blackcoffr MERN Assignment
+# Data Viz
 
 Data visualization using MERN stack and D3 js.
 ## Deployement
